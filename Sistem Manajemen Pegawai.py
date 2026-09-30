@@ -1,61 +1,62 @@
-# =====================================================================
-# KASUS 03 - MULTIPLE INHERITANCE: Sistem Manajemen Pegawai
-# Induk 1: Pegawai      (id_pegawai, nama)
-# Induk 2: Gaji         (gaji)
-# Induk 3: PegawaiProyek(nama_proyek)
-# Anak   : ProjectManager mewarisi ketiga class induk
-# =====================================================================
 class Pegawai:
-    def __init__(self, id_pegawai, nama, **kwargs):
-        super().__init__(**kwargs)
+    def __init__(self, id_pegawai, nama, gaji):
         self.id_pegawai = id_pegawai
         self.nama = nama
-
-
-class Gaji:
-    def __init__(self, gaji, **kwargs):
-        super().__init__(**kwargs)
         self.gaji = gaji
 
-    def tampilkan_gaji(self):
-        print(f"Gaji         : Rp{self.gaji:,.0f}".replace(",", "."))
+    def tampilkan_pegawai(self):
+        print("ID Pegawai  :", self.id_pegawai)
+        print("Nama        :", self.nama)
+        print("Gaji        : Rp", self.gaji)
 
 
 class PegawaiProyek:
-    def __init__(self, nama_proyek, **kwargs):
-        super().__init__(**kwargs)
+    def __init__(self, nama_proyek):
         self.nama_proyek = nama_proyek
 
     def tampilkan_proyek(self):
-        print(f"Nama Proyek  : {self.nama_proyek}")
+        print("Nama Proyek :", self.nama_proyek)
 
 
-class ProjectManager(Pegawai, Gaji, PegawaiProyek):
+class ProjectManager(Pegawai, PegawaiProyek):
     def __init__(self, id_pegawai, nama, gaji, nama_proyek):
-        super().__init__(
-            id_pegawai=id_pegawai,
-            nama=nama,
-            gaji=gaji,
-            nama_proyek=nama_proyek,
-        )
+        Pegawai.__init__(self, id_pegawai, nama, gaji)
+        PegawaiProyek.__init__(self, nama_proyek)
 
     def tampilkan_data(self):
-        print("[PROJECT MANAGER]")
-        print(f"ID Pegawai   : {self.id_pegawai}")
-        print(f"Nama         : {self.nama}")
-        self.tampilkan_gaji()
+        self.tampilkan_pegawai()
         self.tampilkan_proyek()
-        print("-" * 30)
 
 
-def kasus_03():
-    print("\n" + "=" * 40)
-    print("KASUS 03 - SISTEM MANAJEMEN PEGAWAI")
-    print("=" * 40)
+pm1 = ProjectManager(
+    "PM101",
+    "Melvina Fitria",
+    80000000,
+    "Aplikasi Pengembangan Bandara Internasional"
+)
 
-    pm = ProjectManager("PM-006", "Jiwoo Kim", 50000000, "Host Live Aplikasi E-Commerce")
-    pm.tampilkan_data()
+pm2 = ProjectManager(
+    "PM102",
+    "Jokowi Wicaksono",
+    880000,
+    "Pembantu Umum Produksi Film Sumala"
+)
 
-    # Bukti pewarisan majemuk
-    print("Urutan pewarisan (MRO):")
-    print(" -> ".join(cls.__name__ for cls in ProjectManager.__mro__))
+pm3 = ProjectManager(
+    "PM103",
+    "Prabowo Wijaya",
+    950000,
+    "Pembangunan Gedung Pemerintah"
+)
+
+
+print("DATA PROJECT MANAGER 1")
+pm1.tampilkan_data()
+print()
+
+print("DATA PROJECT MANAGER 2")
+pm2.tampilkan_data()
+print()
+
+print("DATA PROJECT MANAGER 3")
+pm3.tampilkan_data()
